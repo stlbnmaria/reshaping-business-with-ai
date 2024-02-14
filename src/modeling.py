@@ -85,8 +85,8 @@ def main() -> None:
             plt.close()
 
     print("**************************")
-    print(f"Avg. BACC {baccs.mean():.2f}")
-    print(f"Avg. AUROC {aurocs.mean():.2f}")
+    print(f"Avg. BACC {np.mean(baccs):.2f}")
+    print(f"Avg. AUROC {np.mean(aurocs):.2f}")
 
 
 if __name__ == "__main__":
