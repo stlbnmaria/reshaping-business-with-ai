@@ -12,9 +12,9 @@ This is an MVP for churn prediction of a global construction and renovation prod
 
 First, churn was defined as a inactivity of a client over the last 60 days (see graph below). Multiple thresholds were tested for the modeling and it seems quite robust, thus the threshold follows business decisions.
 
-Second, data and feature engineering was performed to maximise the information containing possible patterns of clients. Created columns include sales, quantity, nr. orders per channel, share of nr. orders, sales & quantity to last 2 years, nr. returns, and share of returns for the last 60 days and avg. time since the last purchase, nr. returns, and share of returns for the last 2 years.
+<img src="img/avg_time_since_purchase.jpg"  height="300px" style="margin:0px 20px">
 
-<img src="img/avg_time_since_purchase.jpg"  height="250px" style="margin:0px 20px">
+Second, data and feature engineering was performed to maximise the information containing possible patterns of clients. Created columns include sales, quantity, nr. orders per channel, share of nr. orders, sales & quantity to last 2 years, nr. returns, and share of returns for the last 60 days and avg. time since the last purchase, nr. returns, and share of returns for the last 2 years.
 
 ## Setup
 ```bash
@@ -36,10 +36,10 @@ python src/modeling.py
 ```
 
 ## Results
-<p>
+<div>
 <img align="left" src="img/ROC.jpg"  height="250px" style="margin:0px 20px">
 Results are shown in descending order by fold, meaning that the the most recent test data is fold 0. The modeling strategy was to use classical ML algorithms such as Random Forest or XGBoost, which show superior performance according to recent papers in such a context. The final model is a XGBoost that based on the last 60 days of transactions (and add. long term historical information) predicts the likelihood of a client to churn in the next 60 days.
-</p>
+</div>
 
 | Fold | Train Nr. Clients | Train Churn Rate | Test Nr. Clients | Test Churn Rate | Balanced Accuracy | AUROC |
 | --- | --- | --- | --- | --- | --- | --- |
