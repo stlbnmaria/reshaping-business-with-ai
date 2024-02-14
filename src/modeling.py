@@ -1,5 +1,8 @@
+from typing import Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn.metrics import (
     ConfusionMatrixDisplay,
     auc,
@@ -13,7 +16,16 @@ from config.config import RESULTS_DIR
 from src.dataloader import dataloader
 
 
-def main() -> None:
+def run_modeling(folds: int = 5) -> Tuple[pd.DataFrame, XGBClassifier]:
+    """Runs a churn prediction modeling pipeline using XGBoost with cross-validation.
+
+    Parameters:
+    - folds (int): Number of folds for cross-validation. Defaults to 5.
+
+    Returns:
+    Tuple[pd.DataFrame, XGBClassifier]: A tuple containing training DataFrame,
+                                        test DataFrame, and trained XGBoost classifier.
+    """
     test_stamp = None
 
     # gather all metrics across folds
@@ -23,7 +35,7 @@ def main() -> None:
     # folds are going to be iterated from the last to earliest,
     # but this has no effect since model is retrained everytime
     # it's just for data convenience
-    for i in range(5):
+    for i in range(folds):
         print(f"Starting training fold {i}")
         train, test, test_stamp = dataloader(test_stamp)
         clf = XGBClassifier(random_state=0).fit(
@@ -88,6 +100,8 @@ def main() -> None:
     print(f"Avg. BACC {np.mean(baccs):.2f}")
     print(f"Avg. AUROC {np.mean(aurocs):.2f}")
 
+    return train, test, clf
+
 
 if __name__ == "__main__":
-    main()
+    run_modeling()
