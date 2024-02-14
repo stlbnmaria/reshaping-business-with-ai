@@ -37,8 +37,10 @@ python src/modeling.py
 
 ## Results
 <div>
-<img align="left" src="img/ROC.jpg"  height="250px" style="margin:0px 20px">
-Results are shown in descending order by fold, meaning that the the most recent test data is fold 0. The modeling strategy was to use classical ML algorithms such as Random Forest or XGBoost, which show superior performance according to recent papers in such a context. The final model is a XGBoost that based on the last 60 days of transactions (and add. long term historical information) predicts the likelihood of a client to churn in the next 60 days.
+<img align="right" src="img/ROC.jpg"  height="250px" style="margin:0px 20px">
+The modeling strategy was to use classical ML algorithms such as Random Forest or XGBoost, which show superior performance according to recent papers in such a context. The final model is a XGBoost that based on the last 60 days of transactions (and add. long term historical information) predicts the likelihood of a client to churn in the next 60 days.
+
+Results in the table are shown in descending order by fold, meaning that the the most recent test data is fold 0. On the left, the ROC curve for the last fold is shown (by the aforementioned logic, this is fold 1).
 </div>
 
 | Fold | Train Nr. Clients | Train Churn Rate | Test Nr. Clients | Test Churn Rate | Balanced Accuracy | AUROC |
