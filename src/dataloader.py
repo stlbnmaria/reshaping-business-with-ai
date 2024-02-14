@@ -9,6 +9,16 @@ from config.config import DATA_FILE, THRESHOLD
 def get_exogenous_data(
     df_sum: pd.DataFrame, max_stamp: pd.Timestamp, min_stamp: pd.Timestamp
 ) -> pd.DataFrame:
+    """Extracts and processes exogenous data from the input DataFrame within a specified time range.
+
+    Parameters:
+    - df_sum (pd.DataFrame): Input DataFrame containing relevant data.
+    - max_stamp (pd.Timestamp): The upper bound of the time range to consider (exclusive).
+    - min_stamp (pd.Timestamp): The lower bound of the time range to consider (inclusive).
+
+    Returns:
+    pd.DataFrame: Processed DataFrame with summed values grouped by 'client_id'.
+    """
     data = df_sum.loc[
         (df_sum.date_order >= min_stamp) & (df_sum.date_order < max_stamp)
     ]
@@ -21,6 +31,16 @@ def get_exogenous_data(
 def get_historical_buys_ratio(
     df_sum: pd.DataFrame, X: pd.DataFrame, max_stamp: pd.Timestamp
 ) -> pd.DataFrame:
+    """Calculates the historical buying ratios for each client based on the provided DataFrame.
+
+    Parameters:
+    - df_sum (pd.DataFrame): DataFrame containing historical buying data.
+    - X (pd.DataFrame): DataFrame containing client-specific data to be augmented with historical buying ratios.
+    - max_stamp (pd.Timestamp): The maximum timestamp to consider for historical buying data.
+
+    Returns:
+    pd.DataFrame: Augmented DataFrame (X) with additional columns representing historical buying ratios.
+    """
     all_buys = (
         df_sum.loc[
             (df_sum.date_order < max_stamp),
@@ -42,6 +62,17 @@ def get_historical_buys_ratio(
 def get_avg_buy_time(
     df_sum: pd.DataFrame, X: pd.DataFrame, max_stamp: pd.Timestamp
 ) -> pd.DataFrame:
+    """Calculates the average time between consecutive purchases for each client based on historical buying data.
+
+    Parameters:
+    - df_sum (pd.DataFrame): DataFrame containing historical buying data.
+    - X (pd.DataFrame): DataFrame containing client-specific data.
+    - max_stamp (pd.Timestamp): The maximum timestamp to consider for historical buying data.
+
+    Returns:
+    pd.DataFrame: Augmented DataFrame (X) with an additional column
+                  representing the average time between purchases for each client.
+    """
     avg_buy_time = df_sum[df_sum.date_order < max_stamp].copy()
 
     # Sort data by 'client_id' and 'date_order' and drop multiple orders per day
@@ -71,6 +102,18 @@ def get_returns(
     max_stamp: pd.Timestamp,
     min_stamp: pd.Timestamp = None,
 ) -> pd.DataFrame:
+    """Calculates return-related metrics and augments the input DataFrame (X) with the results.
+
+    Parameters:
+    - df (pd.DataFrame): DataFrame containing historical sales data.
+    - X (pd.DataFrame): DataFrame containing client-specific data to be augmented with return-related metrics.
+    - max_stamp (pd.Timestamp): The upper bound of time range to consider for calculations (exclusive).
+    - min_stamp (pd.Timestamp, optional): The lower bound of time range to consider for calculations (inclusive).
+                                          If not provided, defaults to earliest 'date_order' in input DataFrame (df).
+
+    Returns:
+    pd.DataFrame: Augmented DataFrame (X) with additional columns representing return-related metrics.
+    """
     if not min_stamp:
         min_stamp = df.date_order.min()
         out_cols = None
@@ -124,7 +167,19 @@ def get_returns(
     return X
 
 
-def dataloader(stamp: pd.Timestamp = None) -> Tuple[pd.DataFrame]:
+def dataloader(
+    stamp: pd.Timestamp = None,
+) -> Tuple[pd.DataFrame, pd.Timestamp]:
+    """Loads and preprocesses data for churn prediction, creating training and test sets.
+
+    Parameters:
+    - stamp (pd.Timestamp, optional): The timestamp to filter data.
+                                      If provided, only data before this timestamp is considered.
+                                      Defaults to None, which means all available data is used.
+
+    Returns:
+    Tuple[pd.DataFrame]: A tuple containing the training DataFrame, test DataFrame, and the timestamp used for testing.
+    """
     df = pd.read_csv(DATA_FILE, sep=";")
     df["date_order"] = pd.to_datetime(df["date_order"])
 
