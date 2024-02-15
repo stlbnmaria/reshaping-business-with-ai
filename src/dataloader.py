@@ -91,7 +91,7 @@ def get_avg_buy_time(
 
     X = X.merge(
         time_to_buy, left_on="client_id", right_index=True, how="left"
-    ).fillna(0)
+    ).fillna(time_to_buy.mean())
 
     return X
 
