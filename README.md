@@ -52,6 +52,15 @@ The modeling strategy was to use classical ML algorithms such as Random Forest o
 | 4 | 91840 | 0.22 | 91167 | 0.22 | 0.77 | 0.85 |
 | Avg. | - | - | - | - | 0.78 | 0.85 |
 
+## Churn target optimisation
+In order to prioritise sales efforts, we maximise the expected value defined as following:
+
+$$Expected Value = P(Churn) * Potential Gain - Cost of Intervention / Model Accuracy$$
+
+With a sales budget of EUR 100k, we can generate an expected return of EUR 4.4m by contacting 975 clients of different degree of client relationship. Optimally, we would invest EUR 600k in sales budget to maximise the expected return of EUR 5.5m.
+
+<img src="img/optimisation.jpg"  height="300px" style="margin:0px 20px">
+
 
 ## Next Steps
 To go further, it would be useful to include all transaction data and build a database with client as well as product information to be able to cluster global patterns for churn.
